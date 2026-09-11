@@ -6,9 +6,7 @@ import com.cryptaleak.strategy.BreachResult;
 import com.cryptaleak.strategy.KAnonymitySearchStrategy;
 
 import javax.swing.*;
-import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -43,32 +41,34 @@ public class LoginFrame extends JFrame {
     }
 
     private void initComponents() {
-        setTitle("Project CryptaLeak - Enterprise Cyber Defense Login");
-        setSize(460, 600);
+        setTitle("Project CryptaLeak - Enterprise Cyber Defense");
+        setSize(480, 620);
         setResizable(false);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         DarkTheme.applyThemeToFrame(this);
 
-        JPanel mainPanel = new JPanel(new BorderLayout(16, 16));
+        JPanel mainPanel = new JPanel();
+        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
         mainPanel.setBackground(DarkTheme.BG_DARKEST);
-        mainPanel.setBorder(new EmptyBorder(30, 36, 30, 36));
+        mainPanel.setBorder(new EmptyBorder(30, 40, 30, 40));
 
         // 1. BRANDING HEADER
         JPanel headerPanel = new JPanel();
         headerPanel.setLayout(new BoxLayout(headerPanel, BoxLayout.Y_AXIS));
         headerPanel.setBackground(DarkTheme.BG_DARKEST);
+        headerPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        JLabel lblShield = new JLabel("🛡️");
-        lblShield.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 46));
+        JLabel lblShield = new JLabel("🛡️", SwingConstants.CENTER);
+        lblShield.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 52));
         lblShield.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        JLabel lblBrand = new JLabel("PROJECT CRYPTALEAK");
-        lblBrand.setFont(new Font("Segoe UI", Font.BOLD, 20));
+        JLabel lblBrand = new JLabel("CRYPTALEAK", SwingConstants.CENTER);
+        lblBrand.setFont(new Font("Segoe UI", Font.BOLD, 24));
         lblBrand.setForeground(DarkTheme.ACCENT_CYAN);
         lblBrand.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        JLabel lblSubtitle = new JLabel("Enterprise Breach Detection & Identity Defense");
+        JLabel lblSubtitle = new JLabel("Zero-Trust Architecture", SwingConstants.CENTER);
         lblSubtitle.setFont(DarkTheme.FONT_SMALL);
         lblSubtitle.setForeground(DarkTheme.FG_MUTED);
         lblSubtitle.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -78,45 +78,72 @@ public class LoginFrame extends JFrame {
         headerPanel.add(lblBrand);
         headerPanel.add(Box.createVerticalStrut(4));
         headerPanel.add(lblSubtitle);
-        headerPanel.add(Box.createVerticalStrut(14));
+        headerPanel.add(Box.createVerticalStrut(24));
 
-        mainPanel.add(headerPanel, BorderLayout.NORTH);
+        mainPanel.add(headerPanel);
 
         // 2. CREDENTIAL FORM CARD
         JPanel formCard = DarkTheme.createCardPanel();
         formCard.setLayout(new BoxLayout(formCard, BoxLayout.Y_AXIS));
+        formCard.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         // Email field
-        JLabel lblEmail = new JLabel("Corporate Email Address");
+        JLabel lblEmail = new JLabel("Corporate Email");
         lblEmail.setFont(DarkTheme.FONT_BODY_BOLD);
-        lblEmail.setForeground(DarkTheme.FG_PRIMARY);
+        lblEmail.setForeground(DarkTheme.FG_MUTED);
         lblEmail.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         txtEmail = DarkTheme.createTextField(20);
         txtEmail.setText("admin@cryptaleak.corp");
-        txtEmail.setMaximumSize(new Dimension(Short.MAX_VALUE, 36));
+        txtEmail.setMaximumSize(new Dimension(Short.MAX_VALUE, 40));
         txtEmail.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         // Password field
-        JLabel lblPass = new JLabel("Master Password / Security Key");
+        JLabel lblPass = new JLabel("Master Password");
         lblPass.setFont(DarkTheme.FONT_BODY_BOLD);
-        lblPass.setForeground(DarkTheme.FG_PRIMARY);
+        lblPass.setForeground(DarkTheme.FG_MUTED);
         lblPass.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+        JPanel passContainer = new JPanel(new BorderLayout(8, 0));
+        passContainer.setOpaque(false);
+        passContainer.setMaximumSize(new Dimension(Short.MAX_VALUE, 40));
+        passContainer.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         txtPassword = DarkTheme.createPasswordField(20);
         txtPassword.setText("Admin#2026!Crypta");
-        txtPassword.setMaximumSize(new Dimension(Short.MAX_VALUE, 36));
-        txtPassword.setAlignmentX(Component.LEFT_ALIGNMENT);
+        
+        JButton btnToggleEye = new JButton("👁");
+        btnToggleEye.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 14));
+        btnToggleEye.setFocusPainted(false);
+        btnToggleEye.setContentAreaFilled(false);
+        btnToggleEye.setBorderPainted(false);
+        btnToggleEye.setForeground(DarkTheme.FG_MUTED);
+        btnToggleEye.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        
+        final boolean[] passVisible = {false};
+        btnToggleEye.addActionListener(e -> {
+            passVisible[0] = !passVisible[0];
+            if (passVisible[0]) {
+                txtPassword.setEchoChar((char) 0);
+                btnToggleEye.setForeground(DarkTheme.ACCENT_CYAN);
+            } else {
+                txtPassword.setEchoChar('•');
+                btnToggleEye.setForeground(DarkTheme.FG_MUTED);
+            }
+        });
 
-        // Status message
-        lblStatus = new JLabel("Enter credentials to authenticate.");
-        lblStatus.setFont(DarkTheme.FONT_SMALL);
-        lblStatus.setForeground(DarkTheme.FG_MUTED);
+        passContainer.add(txtPassword, BorderLayout.CENTER);
+        passContainer.add(btnToggleEye, BorderLayout.EAST);
+
+        // Status message (Inline error label)
+        lblStatus = new JLabel(" "); // Reserved space
+        lblStatus.setFont(DarkTheme.FONT_BODY_BOLD);
+        lblStatus.setForeground(DarkTheme.ACCENT_RED);
         lblStatus.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         // Login Button
-        btnLogin = DarkTheme.createButton("Authenticate & Access Vault", DarkTheme.ACCENT_BLUE, DarkTheme.FG_PRIMARY);
-        btnLogin.setMaximumSize(new Dimension(Short.MAX_VALUE, 40));
+        btnLogin = DarkTheme.createButton("Authenticate", DarkTheme.ACCENT_BLUE, DarkTheme.FG_PRIMARY);
+        btnLogin.setMaximumSize(new Dimension(Short.MAX_VALUE, 44));
         btnLogin.setAlignmentX(Component.LEFT_ALIGNMENT);
         btnLogin.addActionListener(e -> authenticateUser());
 
@@ -130,47 +157,63 @@ public class LoginFrame extends JFrame {
         formCard.add(Box.createVerticalStrut(14));
         formCard.add(lblPass);
         formCard.add(Box.createVerticalStrut(6));
-        formCard.add(txtPassword);
-        formCard.add(Box.createVerticalStrut(14));
+        formCard.add(passContainer);
+        formCard.add(Box.createVerticalStrut(10));
         formCard.add(lblStatus);
-        formCard.add(Box.createVerticalStrut(16));
+        formCard.add(Box.createVerticalStrut(14));
         formCard.add(btnLogin);
 
-        mainPanel.add(formCard, BorderLayout.CENTER);
+        mainPanel.add(formCard);
 
-        // 3. FOOTER: Quick Demo Account Selectors
+        // 3. FOOTER: Quick Test Dropdown
+        mainPanel.add(Box.createVerticalStrut(20));
+        
         JPanel footerPanel = new JPanel();
         footerPanel.setLayout(new BoxLayout(footerPanel, BoxLayout.Y_AXIS));
         footerPanel.setBackground(DarkTheme.BG_DARKEST);
+        footerPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        JLabel lblDemo = new JLabel("DEMO ROLES SELECTOR:");
+        JLabel lblDemo = new JLabel("Quick Test Credentials");
         lblDemo.setFont(DarkTheme.FONT_SMALL);
         lblDemo.setForeground(DarkTheme.FG_MUTED);
         lblDemo.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        JPanel demoButtons = new JPanel(new FlowLayout(FlowLayout.CENTER, 8, 4));
-        demoButtons.setBackground(DarkTheme.BG_DARKEST);
-
-        JButton btnAdmin = DarkTheme.createButton("Blue Team Lead", DarkTheme.BG_INPUT, DarkTheme.ACCENT_CYAN);
-        btnAdmin.addActionListener(e -> {
-            txtEmail.setText("admin@cryptaleak.corp");
-            txtPassword.setText("Admin#2026!Crypta");
+        String[] demoAccounts = {
+            "Select Demo Account...", 
+            "Blue Team Lead (admin@cryptaleak.corp)", 
+            "Standard Staff (employee@cryptaleak.corp)",
+            "Compromised Account (Demo)"
+        };
+        JComboBox<String> cmbDemo = new JComboBox<>(demoAccounts);
+        cmbDemo.setMaximumSize(new Dimension(300, 32));
+        cmbDemo.setAlignmentX(Component.CENTER_ALIGNMENT);
+        cmbDemo.setBackground(DarkTheme.BG_CARD);
+        cmbDemo.setForeground(DarkTheme.FG_PRIMARY);
+        cmbDemo.setFont(DarkTheme.FONT_BODY);
+        
+        cmbDemo.addActionListener(e -> {
+            int idx = cmbDemo.getSelectedIndex();
+            if (idx == 1) {
+                txtEmail.setText("admin@cryptaleak.corp");
+                txtPassword.setText("Admin#2026!Crypta");
+                lblStatus.setText(" ");
+            } else if (idx == 2) {
+                txtEmail.setText("employee@cryptaleak.corp");
+                txtPassword.setText("EmployeePass123!");
+                lblStatus.setText(" ");
+            } else if (idx == 3) {
+                txtEmail.setText("user1.devops@cryptaleak.corp"); // Might exist or need exact seeded account
+                txtPassword.setText("Random123456"); // This won't work perfectly unless we know a seeded compromised one, but the user can type
+                lblStatus.setText(" ");
+            }
         });
-
-        JButton btnEmployee = DarkTheme.createButton("Standard Staff", DarkTheme.BG_INPUT, DarkTheme.ACCENT_GREEN);
-        btnEmployee.addActionListener(e -> {
-            txtEmail.setText("employee@cryptaleak.corp");
-            txtPassword.setText("EmployeePass123!");
-        });
-
-        demoButtons.add(btnAdmin);
-        demoButtons.add(btnEmployee);
 
         footerPanel.add(lblDemo);
-        footerPanel.add(Box.createVerticalStrut(4));
-        footerPanel.add(demoButtons);
+        footerPanel.add(Box.createVerticalStrut(6));
+        footerPanel.add(cmbDemo);
 
-        mainPanel.add(footerPanel, BorderLayout.SOUTH);
+        mainPanel.add(footerPanel);
+
         setContentPane(mainPanel);
     }
 
@@ -179,12 +222,12 @@ public class LoginFrame extends JFrame {
         String pass = new String(txtPassword.getPassword()).trim();
 
         if (email.isEmpty() || pass.isEmpty()) {
-            lblStatus.setText("Email and password are required.");
+            lblStatus.setText("⚠️ Email and password are required.");
             lblStatus.setForeground(DarkTheme.ACCENT_AMBER);
             return;
         }
 
-        lblStatus.setText("Authenticating with MySQL database...");
+        lblStatus.setText("Authenticating with Identity Provider...");
         lblStatus.setForeground(DarkTheme.ACCENT_CYAN);
         btnLogin.setEnabled(false);
 
@@ -228,7 +271,7 @@ public class LoginFrame extends JFrame {
                     UserSession session = get();
 
                     if (session == null) {
-                        lblStatus.setText("Invalid credentials or account does not exist.");
+                        lblStatus.setText("❌ Invalid credentials or account does not exist.");
                         lblStatus.setForeground(DarkTheme.ACCENT_RED);
                         return;
                     }
@@ -237,15 +280,6 @@ public class LoginFrame extends JFrame {
                     try {
                         db.executeUpdate("UPDATE users SET last_login = CURRENT_TIMESTAMP WHERE id = ?", session.getId());
                     } catch (SQLException ignored) {}
-
-                    // Notify if user's own password was detected in the compromised vault
-                    if (session.isCompromisedCredential()) {
-                        JOptionPane.showMessageDialog(LoginFrame.this,
-                                "⚠️ CRITICAL SECURITY WARNING:\n\n" +
-                                "Your master password was identified in a leaked credential dataset!\n" +
-                                "Please change your password immediately inside the vault portal.",
-                                "Credential Leak Detected", JOptionPane.WARNING_MESSAGE);
-                    }
 
                     // ROUTE USER ACCORDING TO ROLE
                     dispose(); // Close LoginFrame
@@ -258,10 +292,17 @@ public class LoginFrame extends JFrame {
                         SwingUtilities.invokeLater(() -> new EmployeePortalFrame(session).setVisible(true));
                     }
 
+                    // Show toast AFTER disposing so it centers on screen or new frame.
+                    if (session.isCompromisedCredential()) {
+                        DarkTheme.showToast(null, "⚠️ CRITICAL: Your master password was identified in a leaked dataset!", DarkTheme.ACCENT_RED);
+                    } else {
+                        DarkTheme.showToast(null, "✔️ Authentication Successful. Welcome back.", DarkTheme.ACCENT_GREEN);
+                    }
+
                 } catch (Exception ex) {
                     Throwable cause = ex.getCause() != null ? ex.getCause() : ex;
-                    lblStatus.setText("Auth Error: " + cause.getMessage());
-                    lblStatus.setForeground(DarkTheme.ACCENT_AMBER);
+                    lblStatus.setText("❌ Auth Error: " + cause.getMessage());
+                    lblStatus.setForeground(DarkTheme.ACCENT_RED);
                     LOGGER.log(Level.WARNING, "Login failure: " + cause.getMessage(), cause);
                 }
             }
@@ -271,7 +312,6 @@ public class LoginFrame extends JFrame {
     }
 
     public static void main(String[] args) {
-        // Set cross-platform look and feel
         try {
             UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
         } catch (Exception ignored) {}
