@@ -1,0 +1,23 @@
+﻿# Compiled Java Class Files
+bin/
+*.class
+
+# IDE Configuration
+.idea/
+*.iml
+.vscode/
+.settings/
+.project
+.classpath
+
+# Logs and runtime dumps
+*.log
+*.tmp
+
+# Operating System Files
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# MySQL local database files
+mysql_data/
