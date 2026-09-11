@@ -241,20 +241,31 @@ public class BlueTeamDashboardFrame extends JFrame implements IncidentResponseOb
         card.setLayout(new BorderLayout(10, 10));
 
         // Header & Controls
-        JPanel topRow = new JPanel(new BorderLayout(8, 8));
-        topRow.setBackground(DarkTheme.BG_CARD);
+        JPanel topRow = new JPanel(new BorderLayout(0, 8));
+        topRow.setOpaque(false);
 
         JLabel lblTitle = new JLabel("THREAT RELATIONSHIP TOPOLOGY MATRIX");
         lblTitle.setFont(DarkTheme.FONT_BODY_BOLD);
         lblTitle.setForeground(DarkTheme.ACCENT_CYAN);
+        topRow.add(lblTitle, BorderLayout.NORTH);
 
-        JPanel controls = new JPanel(new FlowLayout(FlowLayout.RIGHT, 6, 0));
-        controls.setBackground(DarkTheme.BG_CARD);
+        JPanel controls = new JPanel(new BorderLayout(8, 0));
+        controls.setOpaque(false);
+
+        JPanel comboPanel = new JPanel(new BorderLayout(4, 0));
+        comboPanel.setOpaque(false);
+        JLabel lblOrigin = new JLabel("Origin:");
+        lblOrigin.setForeground(DarkTheme.FG_MUTED);
+        comboPanel.add(lblOrigin, BorderLayout.WEST);
 
         cmbEmployeeSelector = new JComboBox<>();
         cmbEmployeeSelector.setBackground(DarkTheme.BG_INPUT);
         cmbEmployeeSelector.setForeground(DarkTheme.FG_PRIMARY);
         cmbEmployeeSelector.setFont(DarkTheme.FONT_BODY);
+        comboPanel.add(cmbEmployeeSelector, BorderLayout.CENTER);
+
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 6, 0));
+        buttonPanel.setOpaque(false);
 
         JButton btnRunBfs = DarkTheme.createButton("⚡ Run BFS Traversal", DarkTheme.ACCENT_BLUE, DarkTheme.FG_PRIMARY);
         btnRunBfs.addActionListener(e -> executeBfsTraversal());
@@ -262,13 +273,13 @@ public class BlueTeamDashboardFrame extends JFrame implements IncidentResponseOb
         JButton btnQuarantine = DarkTheme.createButton("🛑 Quarantine Node", DarkTheme.BG_INPUT, DarkTheme.ACCENT_RED);
         btnQuarantine.addActionListener(e -> quarantineSelectedNode());
 
-        controls.add(new JLabel("Origin:"));
-        controls.add(cmbEmployeeSelector);
-        controls.add(btnRunBfs);
-        controls.add(btnQuarantine);
+        buttonPanel.add(btnRunBfs);
+        buttonPanel.add(btnQuarantine);
 
-        topRow.add(lblTitle, BorderLayout.WEST);
-        topRow.add(controls, BorderLayout.EAST);
+        controls.add(comboPanel, BorderLayout.CENTER);
+        controls.add(buttonPanel, BorderLayout.EAST);
+
+        topRow.add(controls, BorderLayout.CENTER);
         card.add(topRow, BorderLayout.NORTH);
 
         // Console Output
@@ -285,15 +296,16 @@ public class BlueTeamDashboardFrame extends JFrame implements IncidentResponseOb
         card.setLayout(new BorderLayout(10, 10));
 
         // Header & Actions
-        JPanel topRow = new JPanel(new BorderLayout(8, 8));
-        topRow.setBackground(DarkTheme.BG_CARD);
+        JPanel topRow = new JPanel(new BorderLayout(0, 8));
+        topRow.setOpaque(false);
 
         JLabel lblTitle = new JLabel("ACTIVE HONEYTOKEN LOGS & CANARIES");
         lblTitle.setFont(DarkTheme.FONT_BODY_BOLD);
         lblTitle.setForeground(DarkTheme.ACCENT_PURPLE);
+        topRow.add(lblTitle, BorderLayout.NORTH);
 
-        JPanel actions = new JPanel(new FlowLayout(FlowLayout.RIGHT, 6, 0));
-        actions.setBackground(DarkTheme.BG_CARD);
+        JPanel actions = new JPanel(new FlowLayout(FlowLayout.LEFT, 6, 0));
+        actions.setOpaque(false);
 
         JButton btnNewCanary = DarkTheme.createButton("+ Deploy Canary", DarkTheme.BG_INPUT, DarkTheme.ACCENT_PURPLE);
         btnNewCanary.addActionListener(e -> promptDeployCanary());
@@ -308,8 +320,7 @@ public class BlueTeamDashboardFrame extends JFrame implements IncidentResponseOb
         actions.add(btnSimulateScrape);
         actions.add(btnRefresh);
 
-        topRow.add(lblTitle, BorderLayout.WEST);
-        topRow.add(actions, BorderLayout.EAST);
+        topRow.add(actions, BorderLayout.CENTER);
         card.add(topRow, BorderLayout.NORTH);
 
         // Table

@@ -260,12 +260,13 @@ public class EmployeePortalFrame extends JFrame {
         card.setLayout(new BorderLayout(8, 8));
 
         // Top: Title & Progress Bar
-        JPanel topRow = new JPanel(new BorderLayout(8, 8));
-        topRow.setBackground(DarkTheme.BG_CARD);
+        JPanel topRow = new JPanel(new BorderLayout(0, 8));
+        topRow.setOpaque(false);
 
         JLabel lblTitle = new JLabel("BULK VERIFICATION STREAM (K-ANONYMITY BUCKETS)");
         lblTitle.setFont(DarkTheme.FONT_BODY_BOLD);
         lblTitle.setForeground(DarkTheme.ACCENT_CYAN);
+        topRow.add(lblTitle, BorderLayout.NORTH);
 
         progressBar = new JProgressBar(0, 100);
         progressBar.setValue(0);
@@ -274,8 +275,11 @@ public class EmployeePortalFrame extends JFrame {
         progressBar.setForeground(DarkTheme.ACCENT_BLUE);
         progressBar.setFont(DarkTheme.FONT_SMALL);
 
-        topRow.add(lblTitle, BorderLayout.WEST);
-        topRow.add(progressBar, BorderLayout.EAST);
+        JPanel progressPanel = new JPanel(new BorderLayout());
+        progressPanel.setOpaque(false);
+        progressPanel.add(progressBar, BorderLayout.CENTER);
+        
+        topRow.add(progressPanel, BorderLayout.CENTER);
         card.add(topRow, BorderLayout.NORTH);
 
         // Table Model: Target Prefix, Server Matches, Local Suffix Matches, Security Status
@@ -326,18 +330,21 @@ public class EmployeePortalFrame extends JFrame {
         JPanel card = DarkTheme.createCardPanel();
         card.setLayout(new BorderLayout(6, 6));
 
-        JPanel topBar = new JPanel(new BorderLayout());
-        topBar.setBackground(DarkTheme.BG_CARD);
+        JPanel topBar = new JPanel(new BorderLayout(0, 8));
+        topBar.setOpaque(false);
 
         JLabel lblTitle = new JLabel("RAW CRYPTOGRAPHIC & NETWORK TELEMETRY LOGS");
         lblTitle.setFont(DarkTheme.FONT_BODY_BOLD);
         lblTitle.setForeground(DarkTheme.ACCENT_CYAN);
+        topBar.add(lblTitle, BorderLayout.NORTH);
 
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
+        buttonPanel.setOpaque(false);
         JButton btnClear = DarkTheme.createButton("Clear", DarkTheme.BG_INPUT, DarkTheme.FG_MUTED);
         btnClear.addActionListener(e -> txtConsole.setText(""));
+        buttonPanel.add(btnClear);
 
-        topBar.add(lblTitle, BorderLayout.WEST);
-        topBar.add(btnClear, BorderLayout.EAST);
+        topBar.add(buttonPanel, BorderLayout.CENTER);
         card.add(topBar, BorderLayout.NORTH);
 
         txtConsole = DarkTheme.createConsoleArea();
