@@ -18,6 +18,12 @@ public class Honeytoken {
         SERVICE_ACCOUNT_KEY
     }
 
+    public enum Status {
+        ACTIVE,
+        TRIGGERED,
+        CONTAINED
+    }
+
     private final String canaryId;
     private final TokenType tokenType;
     private final String secretValue;
@@ -27,6 +33,7 @@ public class Honeytoken {
     private final String plantedLocation;
     private final Timestamp createdAt;
     private boolean triggered;
+    private boolean contained;
 
     public Honeytoken(String canaryId, TokenType tokenType, String secretValue,
                       String sha256Hash, String hashPrefix, String hashSuffix,
@@ -40,6 +47,7 @@ public class Honeytoken {
         this.plantedLocation = Objects.requireNonNull(plantedLocation, "plantedLocation cannot be null");
         this.createdAt = new Timestamp(System.currentTimeMillis());
         this.triggered = false;
+        this.contained = false;
     }
 
     public String getCanaryId() {
@@ -80,6 +88,20 @@ public class Honeytoken {
 
     public void setTriggered(boolean triggered) {
         this.triggered = triggered;
+    }
+
+    public boolean isContained() {
+        return contained;
+    }
+
+    public void setContained(boolean contained) {
+        this.contained = contained;
+    }
+
+    public Status getStatus() {
+        if (contained) return Status.CONTAINED;
+        if (triggered) return Status.TRIGGERED;
+        return Status.ACTIVE;
     }
 
     @Override

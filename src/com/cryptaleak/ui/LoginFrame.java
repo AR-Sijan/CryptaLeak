@@ -181,15 +181,16 @@ public class LoginFrame extends JFrame {
         String[] demoAccounts = {
             "Select Demo Account...", 
             "Blue Team Lead (admin@cryptaleak.corp)", 
-            "Standard Staff (employee@cryptaleak.corp)",
-            "Compromised Account (Demo)"
+            "SecOps Analyst (analyst@cryptaleak.corp)",
+            "Standard Staff (employee@cryptaleak.corp)"
         };
         JComboBox<String> cmbDemo = new JComboBox<>(demoAccounts);
-        cmbDemo.setMaximumSize(new Dimension(300, 32));
+        cmbDemo.setMaximumSize(new Dimension(320, 34));
         cmbDemo.setAlignmentX(Component.CENTER_ALIGNMENT);
         cmbDemo.setBackground(DarkTheme.BG_CARD);
         cmbDemo.setForeground(DarkTheme.FG_PRIMARY);
         cmbDemo.setFont(DarkTheme.FONT_BODY);
+        cmbDemo.setToolTipText("Select a pre-configured corporate identity to auto-fill credentials");
         
         cmbDemo.addActionListener(e -> {
             int idx = cmbDemo.getSelectedIndex();
@@ -198,12 +199,12 @@ public class LoginFrame extends JFrame {
                 txtPassword.setText("Admin#2026!Crypta");
                 lblStatus.setText(" ");
             } else if (idx == 2) {
-                txtEmail.setText("employee@cryptaleak.corp");
-                txtPassword.setText("EmployeePass123!");
+                txtEmail.setText("analyst@cryptaleak.corp");
+                txtPassword.setText("AnalystSecure123");
                 lblStatus.setText(" ");
             } else if (idx == 3) {
-                txtEmail.setText("user1.devops@cryptaleak.corp"); // Might exist or need exact seeded account
-                txtPassword.setText("Random123456"); // This won't work perfectly unless we know a seeded compromised one, but the user can type
+                txtEmail.setText("employee@cryptaleak.corp");
+                txtPassword.setText("EmployeePass123!");
                 lblStatus.setText(" ");
             }
         });

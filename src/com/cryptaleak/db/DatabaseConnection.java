@@ -28,7 +28,7 @@ public final class DatabaseConnection implements AutoCloseable {
     private static final int DEFAULT_PORT = 3306;
     private static final String DEFAULT_DATABASE = "cryptaleak_db";
     private static final String DEFAULT_URL = String.format(
-            "jdbc:mysql://%s:%d/%s?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC&characterEncoding=UTF-8&autoReconnect=true",
+            "jdbc:mysql://%s:%d/%s?useSSL=true&requireSSL=true&verifyServerCertificate=false&allowPublicKeyRetrieval=true&enabledTLSProtocols=TLSv1.2,TLSv1.3&serverTimezone=UTC&characterEncoding=UTF-8&autoReconnect=true",
             DEFAULT_HOST, DEFAULT_PORT, DEFAULT_DATABASE
     );
     private static final String DEFAULT_USER = "root";
